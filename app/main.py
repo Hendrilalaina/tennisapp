@@ -1,5 +1,7 @@
 from fastapi import FastAPI
+
 from app.routers import routers
+from app.db.models import init_db
 
 app = FastAPI(
     title="Tennis Application Management API",
@@ -10,6 +12,7 @@ app = FastAPI(
 #     import uvicorn
 #     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
 
+init_db()
 for router in routers:
     app.include_router(router)
 
