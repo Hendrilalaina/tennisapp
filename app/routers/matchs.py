@@ -1,3 +1,4 @@
+from typing import List
 from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
 
@@ -34,3 +35,7 @@ async def create_match(match: MatchCreate, db: Session = Depends(get_db)):
             detail="Two players can not be same")
     
     return match_repository.create(db, match)
+
+@router.get('/{id}')
+async def get_match(id: int, db: Session = Depends(get_db)):
+    return match_repository.get(db, id)
