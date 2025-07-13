@@ -15,3 +15,8 @@ class PlayerUpdate(BaseModel):
     first_name: Optional[str] = Field(None, min_length=3, max_length=100)
     last_name: Optional[str] = Field(None, min_length=3, max_length=100)
     sexe: Optional[Sexe] = None
+
+class PlayerResponse(BaseModel):
+    first_name: str
+    last_name: str
+    sexe: str
