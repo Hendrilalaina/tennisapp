@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 from app.db.session import get_db
 from app.crud.match import match_repository
 from app.crud.player import player_repository
-from app.schemas.match import MatchCreate
+from app.schemas.match import MatchCreate, MatchResponse
 
 router = APIRouter(
     prefix='/match',
@@ -36,6 +36,6 @@ async def create_match(match: MatchCreate, db: Session = Depends(get_db)):
     
     return match_repository.create(db, match)
 
-@router.get('/{id}')
+@router.get('/{id}',response_model=MatchResponse)
 async def get_match(id: int, db: Session = Depends(get_db)):
     return match_repository.get(db, id)

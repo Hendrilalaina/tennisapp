@@ -5,3 +5,6 @@ class TournamentSchema(BaseModel):
 
 class TournamentResponse(BaseModel):
     name: str
+
+    class Config:
+        orm_mode = True

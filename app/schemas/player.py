@@ -20,3 +20,6 @@ class PlayerResponse(BaseModel):
     first_name: str
     last_name: str
     sexe: str
+
+    class Config:
+        orm_mode = True
