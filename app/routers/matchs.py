@@ -11,11 +11,11 @@ router = APIRouter(
     prefix='/match',
     tags=['Matches'])
 
-@router.get('/')
+@router.get('/', response_model=List[MatchResponse])
 async def list_matches(db: Session = Depends(get_db)):
     return match_repository.get_all(db)
 
-@router.post('/')
+@router.post('/', response_model=MatchResponse)
 async def create_match(match: MatchCreate, db: Session = Depends(get_db)):
     player_1 = player_repository.get(db, id=match.player_1)
     if player_1 is None:
@@ -36,6 +36,6 @@ async def create_match(match: MatchCreate, db: Session = Depends(get_db)):
     
     return match_repository.create(db, match)
 
-@router.get('/{id}',response_model=MatchResponse)
+@router.get('/{id}', response_model=MatchResponse)
 async def get_match(id: int, db: Session = Depends(get_db)):
     return match_repository.get(db, id)

@@ -13,3 +13,4 @@ class Player(Base):
 
     player_1 = relationship('Match', foreign_keys='Match.player_1', back_populates='p_1')
     player_2 = relationship('Match', foreign_keys='Match.player_2', back_populates='p_2')
+    player_winner = relationship('Match', foreign_keys='Match.player_winner', back_populates='p_winner')

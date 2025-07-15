@@ -11,10 +11,12 @@ class MatchCreate(BaseModel):
     year: Optional[int] = Field(None)
 
 class MatchResponse(BaseModel):
+    id: int
     p_1: PlayerResponse
     p_2: PlayerResponse
+    p_winner: Optional[PlayerResponse]
     tournament: Optional[TournamentResponse]
     year: Optional[int]
 
     class Config:
-        orm_mode = True
+        from_attributes = True

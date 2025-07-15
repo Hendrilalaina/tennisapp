@@ -22,4 +22,4 @@ class PlayerResponse(BaseModel):
     sexe: str
 
     class Config:
-        orm_mode = True
+        from_attributes = True
