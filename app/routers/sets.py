@@ -10,35 +10,6 @@ router = APIRouter(
     prefix='/sets',
     tags=['Sets'])
 
-def validate_set(set: SetCreate):
-
-    if set.player1_games < 6 and set.player2_games < 6:
-        raise HTTPException(
-            status_code=400,
-            detail="Invalid games")
-
-    if set.player1_games == 5 and set.player2_games == 6:
-        raise HTTPException(
-            status_code=400,
-            detail="Invalid games")
-    
-    if set.player1_games == 6 and set.player2_games == 5:
-        raise HTTPException(
-            status_code=400,
-            detail="Invalid games")
-
-    if set.player1_games == 7:
-        if set.player2_games < 5 or set.player2_games > 6:
-            raise HTTPException(
-                status_code=400,
-                detail="Invalid games")
-        
-    if set.player2_games == 7:
-        if set.player1_games < 5 or set.player1_games > 6:
-            raise HTTPException(
-                status_code=400,
-                detail="Invalid games")
-
 @router.get('/')
 async def list_sets(db: Session = Depends(get_db)):
     return set_repository.get_all(db)
@@ -51,5 +22,5 @@ async def create_set(set: SetCreate, db: Session = Depends(get_db)):
             status_code=404,
             detail="Match is not found")
     
-    validate_set(set)
+    set.validate_set()
     return set_repository.create(db, set)
