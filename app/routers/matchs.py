@@ -6,6 +6,7 @@ from app.db.session import get_db
 from app.crud.match import match_repository
 from app.crud.player import player_repository
 from app.schemas.match import MatchCreate, MatchResponse
+from app.schemas.set import SetResponse
 
 router = APIRouter(
     prefix='/match',
@@ -40,11 +41,10 @@ async def create_match(match: MatchCreate, db: Session = Depends(get_db)):
 async def get_match(id: int, db: Session = Depends(get_db)):
     return match_repository.get(db, id)
 
-@router.get('/{id}/set')
-async def get_set_wins(id: int, db: Session = Depends(get_db)):
-    sets = match_repository.get_sets(db, id)
-    score = match_repository.get_set_wins(db, id)
-    results = {}
-    results['sets'] = sets
-    results['score'] = score
-    return results
+@router.get('/{id}/set', response_model=List[SetResponse])
+async def list_sets(id: int, db: Session = Depends(get_db)):
+    return match_repository.get_sets(db, id)
+
+@router.get('/{id}/score')
+async def get_score(id: int, db: Session = Depends(get_db)):
+    return match_repository.get_set_wins(db, id)

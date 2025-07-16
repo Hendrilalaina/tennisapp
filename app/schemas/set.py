@@ -36,3 +36,7 @@ class SetCreate(BaseModel):
                     status_code=400,
                     detail="Invalid games")
 
+class SetResponse(BaseModel):
+    set_number: int
+    player1_games: int
+    player2_games: int
