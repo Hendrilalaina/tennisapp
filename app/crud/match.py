@@ -1,7 +1,9 @@
 from typing import List, Optional
+from sqlalchemy import case, func
 from sqlalchemy.orm import Session
 
 from app.db.models.match import Match
+from app.db.models.set import Set
 from app.schemas.match import MatchCreate
 from app.crud.player import player_repository
 
@@ -23,6 +25,20 @@ class MatchRepository:
         db.commit()
         db.refresh(match)
         return match
+
+    def get_sets(self, db: Session, id: int):
+        return db.query(Set).filter(Set.match_id == id).all()
+    
+    def get_set_wins(self, db: Session, id: int):
+        set_wins = db.query(
+            func.sum(case((Set.player1_games > Set.player2_games, 1), else_=0)).label('player1_wins'),
+            func.sum(case((Set.player2_games > Set.player1_games, 1), else_=0)).label('player2_wins')
+        ).filter(Set.match_id == id).one()
+
+        return {
+            "player1_wins": set_wins.player1_wins,
+            "player2_wins": set_wins.player2_wins
+        }
 
 
 match_repository = MatchRepository()

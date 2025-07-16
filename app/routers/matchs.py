@@ -39,3 +39,12 @@ async def create_match(match: MatchCreate, db: Session = Depends(get_db)):
 @router.get('/{id}', response_model=MatchResponse)
 async def get_match(id: int, db: Session = Depends(get_db)):
     return match_repository.get(db, id)
+
+@router.get('/{id}/set')
+async def get_set_wins(id: int, db: Session = Depends(get_db)):
+    sets = match_repository.get_sets(db, id)
+    score = match_repository.get_set_wins(db, id)
+    results = {}
+    results['sets'] = sets
+    results['score'] = score
+    return results

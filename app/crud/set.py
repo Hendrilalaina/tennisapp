@@ -1,4 +1,5 @@
 from typing import List
+from sqlalchemy import case, func
 from sqlalchemy.orm import Session
 
 from app.db.models.set import Set
@@ -20,4 +21,6 @@ class SetRepository:
         db.refresh(set)
 
         return set
+    
+
 set_repository = SetRepository()
