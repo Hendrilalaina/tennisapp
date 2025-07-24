@@ -1,4 +1,5 @@
-from fastapi import FastAPI
+from typing import Annotated
+from fastapi import FastAPI, File, Form, UploadFile
 
 from app.routers import routers
 from app.db.models import init_db
@@ -19,3 +20,16 @@ for router in routers:
 @app.get("/")
 async def welcome():
     return "Welcome to tennis app"
+
+@app.post("/files/")
+async def create_file(
+    file: Annotated[UploadFile, File()],
+):
+    try:
+        file_path = './upload/{file.filename}'
+        with open(file_path, 'wb') as f:
+            f.write(file.file.read())
+        return {'message': 'File uploaded'}
+
+    except Exception as e:
+        return {'message': e.args}
